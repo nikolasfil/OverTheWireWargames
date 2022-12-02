@@ -11,7 +11,7 @@ With -c / --cycle and following up with an integer , you start with the level yo
 
 It is working for both windows and linux 
 
---
+------------------------
 
 report.py is a simple script that scrapes the challenge's description off the site.
 
@@ -21,7 +21,7 @@ report.py can take two arguments
 
 -n/--number to specify the level to scrape
 
---
+------------------------
 
 bandit-steps.txt  is the complete scraping you would get by using the -f flag
 
