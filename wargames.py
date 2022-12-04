@@ -33,13 +33,15 @@ def welcomingMessage(msg,sl=0):
 
 def main():
     #general command to know 
-    command =lambda game,level: f"ssh {game}{level}@{game}.labs.overthewire.org -p 2223"
+    wargames={'leviathan': 2223,'krypton': 2231,'bandit': 2220,'natas': 34,'narnia': 2226,'behemoth': 2221,'utumno': 2227,'maze': 2225,'manpage': 2224}
+        
+    command =lambda game,level: f"ssh {game}{level}@{game}.labs.overthewire.org -p {wargames[game]}"
     
-    h1='SSH wargame easy connect'
+    h1='OverTheWire wargames easy connect.\n\n'
 
-    h2='\nwith -n you can specify a level to play \nwith -c you can specify a level to start and loop through all the rest \nWith -g you can choose between bandit and leviathan\nYou can break out of the loop with keyboardInterruption at the continue to level prompt'
+    h2='\nWith -n you can specify a level to play \nor with -c you can specify a level to start and loop through all the rest.\nWith -g you must choose between [leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage]\nYou can break out of the loop with keyboardInterruption at the continue to level prompt'
 
-    h="This is an easy way to connect to the game ssh bandit or leviathan ,by overthewire \nhttps://overthewire.org/\n"
+    h="This is an easy way to connect to the overthewire wargames \nhttps://overthewire.org/\n"
 
     #Parser Arguments
     parser = argparse.ArgumentParser(description=h1+h2)
@@ -53,11 +55,9 @@ def main():
 
     #Main excecution
     if args.game is not None:
-
-        if args.game=='leviathan':
-            levels = 8
-        elif args.game=='bandit':
-            levels = 34
+        args.game=args.game.lower()
+        levels={'leviathan': 8,'krypton': 6,'bandit': 34,'natas': 34,'narnia': 9,'behemoth': 8,'utumno': 8,'maze': 9,'vortex': 27,'manpage': 7}
+                    
         
 
         if args.cycle is None and args.number is not None:  
@@ -70,10 +70,10 @@ def main():
             num = args.cycle
             
 
-            while num < levels:
+            while num < levels[args.game]:
         
                 try:
-                    x = input(f'Press Enter to continue to lelel{num}: ')    
+                    x = input(f'Press Enter to continue to level{num}: ')    
                     clear()
                     os.system(command(args.game,num))
                     num += 1
@@ -90,7 +90,7 @@ def main():
             print(h1+h2+"\n\nYou have to specify only one option ")
 
     else: 
-        print('Choose -g bandit or -g leviathan')
+        print('Choose -g [leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage]')
         
 
 if __name__=='__main__':
