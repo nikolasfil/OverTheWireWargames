@@ -1,13 +1,19 @@
-# SSHBandit
-Overthewire ssh bandit wargame 
+# Overthewire SSH wargame 
 
-bandit.py is a simple script to automate the process of connecting to the different levels of the overthewire.org/wargames/bandit/
+wargames.py is a simple script to automate the process of connecting to the different levels of the overthewire.org/wargames/
+Currently supporting bandit and leviathan
 
-bandit.py can take two parsing options
+It takes three parsing options:
 
-Either -n / --number and following up with and integer . This connects to the ssh level you specify with the integer 
+```Bash
+-g / --game #leviathan or bandit,and
 
-With -c / --cycle and following up with an integer , you start with the level you specify and then it continues on as a loop for the rest of the levels 
+-n / --number #and following up with and integer . This connects to the ssh level you specify with the integer 
+
+-c / --cycle #and following up with an integer , you start with the level you specify and then it continues on as a loop for the rest of the levels 
+```
+
+You must select either -c or -n , and always specify -g 
 
 It is working for both windows and linux 
 
@@ -15,13 +21,17 @@ It is working for both windows and linux
 
 report.py is a simple script that scrapes the challenge's description off the site.
 
-report.py can take two arguments
+It takes three arguments:
 
--f/--file for the name of the file. Default value is steps.txt
+```Bash
+-g / --game #leviathan or bandit (must)
 
--n/--number to specify the level to scrape
+-f / --file #for the name of the file.(optional) Default value is steps.txt
+
+-n / --number #to specify the level to scrape (optional). If number is not specified it will create a steps for all the levels.
+```
 
 ------------------------
 
 bandit-steps.txt  is the complete scraping you would get by using the -f flag
-
+Leviathan challenge does not have 
