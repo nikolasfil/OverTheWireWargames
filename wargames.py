@@ -54,7 +54,7 @@ def main():
 
 
     #Main excecution
-    if args.game is not None:
+    if args.game in wargames.keys():
         args.game=args.game.lower()
         levels={'leviathan': 8,'krypton': 6,'bandit': 34,'natas': 34,'narnia': 9,'behemoth': 8,'utumno': 8,'maze': 9,'vortex': 27,'manpage': 7}
                     
@@ -89,8 +89,11 @@ def main():
             welcomingMessage(h)
             print(h1+h2+"\n\nYou have to specify only one option ")
 
-    else: 
+    elif args.game is None: 
         print('Choose -g [leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage]')
+    
+    elif args.game not in wargames.keys(): 
+        print(f'\n{args.game} is not supported.\nChoose one of the games : leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage')
         
 
 if __name__=='__main__':
