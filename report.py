@@ -78,7 +78,8 @@ def writing(f,i,game):
     
     f.write(f"\n{'-'*2*len('Level 1 → Level 1')}\n\nLevel {i} → Level {i+1}\n\n{'-'*2*len('Level 15 → Level 16')}\n")
     
-    f.write(f"{scraping(i+1,game)}\n")
+    # f.write(f"{scraping(i+1,game)}\n")
+    f.write(f"{scraping(i,game)}\n")
 
     f.write(f'\n{"-"*len("steps: ")}\nsteps: \n\n\n{"-"*len("steps: ")}\n\n')
 
