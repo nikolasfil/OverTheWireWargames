@@ -26,11 +26,14 @@ It can run without any requirements and takes three parsing options:
 -n / --number #and following up with and integer . This connects to the ssh level you specify with the integer 
 
 -c / --cycle #and following up with an integer , you start with the level you specify and then it continues on as a loop for the rest of the levels 
+
+-p / --password #if flagged it will prompt to save the passwords and display the ones that have been saved in a {game}-passwords.txt file in the same folder
 ```
 
 You must select either -c or -n , and always specify -g 
+-p is optional , and it does not need any additional argument 
 
-It is working for both windows and linux 
+It works for any os 
 
 Usage:
 
@@ -39,7 +42,11 @@ python wargames.py -g game -c starting_level
 ```
 
 ```Bash
-python wargames.py -g game -n specific_level
+python wargames.py -g game -n specific_level 
+```
+
+```Bash
+python wargames.py -g game -n specific_level -p 
 ```
 This initiates the ssh connection
 
