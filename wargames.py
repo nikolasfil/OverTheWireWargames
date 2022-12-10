@@ -3,10 +3,11 @@ import argparse
 import os
 import time
 import platform
+import pyperclip
 
 
 #https://overthewire.org/wargames/wargame
-#last updated 7/12/2022 - 19:00
+#last updated 10/12/2022 - 15:00
 
 #Author :  Nikolasfil 
 
@@ -21,7 +22,7 @@ class WarGames:
 
         self.usage_message="This is an easy way to connect to the overthewire wargames \nhttps://overthewire.org/\n"
        
-        self.levels={'leviathan': 8,'krypton': 6,'bandit': 34,'natas': 34,'narnia': 9,'behemoth': 8,'utumno': 8,'maze': 9,'vortex': 27,'manpage': 7}
+        self.levels={'leviathan': 8,'krypton': 8,'bandit': 34,'natas': 34,'narnia': 9,'behemoth': 8,'utumno': 8,'maze': 9,'vortex': 27,'manpage': 7}
         self.passwords={}
                     
 
@@ -43,7 +44,12 @@ class WarGames:
 
     
     def password_manager(self):
-        with open(f"{self.args.game}-passwords.txt",'r') as f :
+        file = f"{self.args.game}-passwords.txt"
+        ls = os.listdir()
+        if file not in ls:
+            with open(file,'w') as f :
+                f.write('')
+        with open(file,'r') as f :
             ls = [i.strip('\n') for i in f ]
         self.passwords={ls[i]:ls[i+1] for i in range(0,len(ls)-1,2)}
         
@@ -52,17 +58,24 @@ class WarGames:
         n = str(self.args.cycle if self.args.cycle is not None else self.args.number) 
         if n in self.passwords.keys():
             print(f'\nPassword for next level is :{self.passwords[n]}\n')
+            pyperclip.copy(self.passwords[n])
 
+
+        #  todo : create the file if the file does not exist!!!
+        
         with open(f"{self.args.game}-passwords.txt",'w') as f:
             for i,v in self.passwords.items():
                 if i is not None and v is not None:
                     f.write(f"{i}\n{v}\n")
-                     
-        password=input('\n\n Type the password for the next level or press enter to continue: ')
         
-        if password!='' and password!='\n':
-            self.passwords[self.args.cycle if self.args.cycle is not None else self.args.number]=password
+        if n in self.passwords.keys():
+            x =input('\n\n Press enter to continue: ') 
+        else:
+            password=input('\n\n Type the password for the next level or press enter to continue: ')
+            if password!='' and password!='\n':
+                self.passwords[self.args.cycle if self.args.cycle is not None else self.args.number]=password
         
+        # sth is off with the passwords when writting the same file
         with open(f"{self.args.game}-passwords.txt",'w') as f:
             for i,v in self.passwords.items():
                 if i is not None and v is not None:

@@ -27,7 +27,7 @@ It can run without any requirements and takes three parsing options:
 
 -c / --cycle #and following up with an integer , you start with the level you specify and then it continues on as a loop for the rest of the levels 
 
--p / --password #if flagged it will prompt to save the passwords and display the ones that have been saved in a {game}-passwords.txt file in the same folder
+-p / --password #if flagged it will prompt to save the passwords and display the ones that have been saved in a {game}-passwords.txt file in the same folder and copies the password for the next challenge in clipboard
 ```
 
 You must select either -c or -n , and always specify -g 
@@ -68,6 +68,7 @@ or simply
 ```Bash
 pip3 install beautifulsoup4
 pip3 install requests
+pip3 install pyperclip
 ```
 
 
