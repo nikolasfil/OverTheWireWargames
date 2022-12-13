@@ -7,7 +7,7 @@ import pyperclip
 
 
 #https://overthewire.org/wargames/wargame
-#last updated 10/12/2022 - 15:00
+#last updated 14/12/2022 - 00:05
 
 #Author :  Nikolasfil 
 
@@ -57,7 +57,7 @@ class WarGames:
     def password_saver(self):
         n = str(self.args.cycle if self.args.cycle is not None else self.args.number) 
         if n in self.passwords.keys():
-            print(f'\nPassword for next level is :{self.passwords[n]}\n')
+            print(f'\nPassword for next level is: {self.passwords[n]}\n')
             pyperclip.copy(self.passwords[n])
 
 
@@ -105,11 +105,11 @@ class WarGames:
         while self.args.cycle < self.levels[self.args.game]:
             
             try:  
+                self.clear()
                 if self.args.password is not None and self.args.password:                    
                     self.password_saver()
                 else:
                     x = input(f'\nPress Enter to continue to level{self.args.cycle if self.args.cycle is not None else self.args.number}: ')    
-                self.clear()
                 os.system(self.command())
                 self.args.cycle += 1
     
