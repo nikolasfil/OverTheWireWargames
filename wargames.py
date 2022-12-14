@@ -58,7 +58,7 @@ class WarGames:
     def password_saver(self):
         n = str(self.args.cycle if self.args.cycle is not None else self.args.number) 
         if n in self.passwords.keys():
-            print(f'\nPassword for next level is: {self.passwords[n]}\n')
+            print(f'\nPassword for next level {self.args.cycle if self.args.cycle is not None else self.args.number} is: {self.passwords[n]}\n')
             pyperclip.copy(self.passwords[n])
 
 
@@ -70,9 +70,9 @@ class WarGames:
                     f.write(f"{i}\n{v}\n")
         
         if n in self.passwords.keys():
-            x =input('\n\n Press enter to continue: ') 
+            x =input(f'\n\n Press enter to continue to level {self.args.cycle if self.args.cycle is not None else self.args.number}: ') 
         else:
-            password=input('\n\n Type the password for the next level or press enter to continue: ')
+            password=input(f'\n\n Type the password for the next level {self.args.cycle if self.args.cycle is not None else self.args.number} or press enter to continue: ')
             if password!='' and password!='\n':
                 self.passwords[self.args.cycle if self.args.cycle is not None else self.args.number]=password
         
