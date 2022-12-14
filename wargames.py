@@ -14,11 +14,11 @@ import pyperclip
 class WarGames:
     def __init__(self):
         
-        self.wargames={'leviathan': 2223,'krypton': 2231,'bandit': 2220,'natas': 34,'narnia': 2226,'behemoth': 2221,'utumno': 2227,'maze': 2225,'manpage': 2224}
+        self.wargames={'leviathan': 2223,'krypton': 2231,'natas':0,'bandit': 2220,'narnia': 2226,'behemoth': 2221,'utumno': 2227,'maze': 2225,'manpage': 2224}
         
         self.welcoming_message='OverTheWire wargames easy connect.\n\n'
 
-        self.options_message='\nWith -n you can specify a level to play \nor with -c you can specify a level to start and loop through all the rest.\nWith -g you must choose between [leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage]\nYou can break out of the loop with keyboardInterruption at the continue to level prompt'
+        self.options_message='\nWith -n you can specify a level to play \nor with -c you can specify a level to start and loop through all the rest.\nWith -g you must choose between [leviathan,krypton,bandit,narnia,behemoth,utumno,maze,vortex,manpage]\nYou can break out of the loop with keyboardInterruption at the continue to level prompt'
 
         self.usage_message="This is an easy way to connect to the overthewire wargames \nhttps://overthewire.org/\n"
        
@@ -34,8 +34,9 @@ class WarGames:
 
 
 
-    def message(self,msg,time_sleep=0):
-        self.clear()   
+    def message(self,msg,time_sleep=0,initial_clear=False):
+        if initial_clear:
+            self.clear()   
         print(msg)
         
         if time_sleep!=0:
@@ -82,8 +83,14 @@ class WarGames:
                     f.write(f"{i}\n{v}\n")
 
 
+    # def command(self):
+        # return f"ssh {self.args.game}{self.args.cycle if self.args.cycle is not None else self.args.number}@{self.args.game}.labs.overthewire.org -p {self.wargames[self.args.game]}"
+    
     def command(self):
-        return f"ssh {self.args.game}{self.args.cycle if self.args.cycle is not None else self.args.number}@{self.args.game}.labs.overthewire.org -p {self.wargames[self.args.game]}"
+        if self.args.game!='natas':
+
+            return f"ssh {self.args.game}{self.args.cycle if self.args.cycle is not None else self.args.number}@{self.args.game}.labs.overthewire.org -p {self.wargames[self.args.game]}"
+        return f"open http://natas{self.args.cycle if self.args.cycle is not None else self.args.number}.natas.labs.overthewire.org &" 
 
 
     def parsing_arguments(self):
@@ -91,8 +98,8 @@ class WarGames:
         parser = argparse.ArgumentParser(description=self.welcoming_message+self.options_message)
         parser.add_argument('--number', '-n', type=int, help='Individual Level Number')
         parser.add_argument('--cycle', '-c', type=int, help='Starts going through all the levels starting with c')
-        
-        parser.add_argument('--game', '-g', type=str, help='Choose between bandit and wargame')
+            
+        parser.add_argument('--game', '-g', type=str,choices=list(self.wargames.keys()), help='Choose between [leviathan,krypton,natas,bandit,narnia,behemoth,utumno,maze,vortex,manpage]')
         parser.add_argument('--password', '-p',default=False,action='store_true',help='Save passowrds')
         
         
@@ -109,7 +116,8 @@ class WarGames:
                 if self.args.password is not None and self.args.password:                    
                     self.password_saver()
                 else:
-                    x = input(f'\nPress Enter to continue to level{self.args.cycle if self.args.cycle is not None else self.args.number}: ')    
+                    x = input(f'\nPress Enter to continue to level{self.args.cycle if self.args.cycle is not None else self.args.number}: ')
+            
                 os.system(self.command())
                 self.args.cycle += 1
     
@@ -127,7 +135,6 @@ class WarGames:
             
             if self.args.password is not None and self.args.password:
                 self.password_manager()
-                
 
             if self.args.cycle is None and self.args.number is not None:  
                 # Running a specific level
@@ -151,9 +158,9 @@ class WarGames:
             # didnt specify a game
             self.message('Choose -g [leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage]')
         
-        elif self.args.game not in wargames.keys(): 
+        elif self.args.game not in self.wargames.keys(): 
             # Game not supported 
-            self.message(f'\n{self.args.game} is not supported.\nCuhoose one of the games : leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage')
+            self.message(f'\n{self.args.game} is not supported.\nChoose one of the games : leviathan,krypton,bandit,natas,narnia,behemoth,utumno,maze,vortex,manpage')
             
 
 if __name__=='__main__':
