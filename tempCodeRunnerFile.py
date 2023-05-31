@@ -1,0 +1,10 @@
+"leviathan",
+            "krypton",
+            "natas",
+            "bandit",
+            "narnia",
+            "behemoth",
+            "utumno",
+            "maze",
+            "vortex",
+            "manpage"
