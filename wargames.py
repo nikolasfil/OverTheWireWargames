@@ -147,8 +147,6 @@ class WarGames:
             "--game",
             "-g",
             type=str,
-            # parser.add_argument("--proto").completer=ChoicesCompleter(('http', 'https', 'ssh', 'rsync', 'wss'))
-            # choices=list(self.wargames.keys()),
             help="Choose between [leviathan,krypton,natas,bandit,narnia,behemoth,utumno,maze,vortex,manpage]").completer = argcomplete.completers.ChoicesCompleter(
             (
                 "leviathan",
