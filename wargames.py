@@ -2,18 +2,16 @@
 # PYTHON_ARGCOMPLETE_OK
 
 import argparse
-import os, sys
+import os
+import sys
 import time
 import platform
 import pyperclip
 import argcomplete
-# from argcomplete.completers import ChoicesCompleter
 
 
 # https://overthewire.org/wargames/wargame
-# last updated 31/05/2023 - 10:00
-
-# https://pypi.org/project/argcomplete/
+# last updated 20/06/2023 - 22:30
 
 # Author :  Nikolasfil
 
@@ -94,8 +92,7 @@ class WarGames:
         if f"{self.args.game}-passwords.txt" not in os.listdir():
             with open(f"{self.args.game}-passwords.txt", "w") as f:
                 f.write("")
-        
-       
+
         # save the password to the file
         with open(f"{self.args.game}-passwords.txt", "w") as f:
             for i, v in self.passwords.items():
@@ -126,16 +123,22 @@ class WarGames:
                     f.write(f"{i}\n{v}\n")
 
     def command(self):
+        level = self.args.cycle if self.args.cycle is not None else self.args.number
         if self.args.game != "natas":
-            return f"ssh {self.args.game}{self.args.cycle if self.args.cycle is not None else self.args.number}@{self.args.game}.labs.overthewire.org -p {self.wargames[self.args.game]}"
-        return f"open http://natas{self.args.cycle if self.args.cycle is not None else self.args.number}.natas.labs.overthewire.org &"
+            return f"ssh {self.args.game}{level}@{self.args.game}.labs.overthewire.org -p {self.wargames[self.args.game]}"
+        level = str(level)
+        if self.args.password and level in self.passwords.keys():
+            return f"open http://natas{level}:{self.passwords[level]}@natas{level}.natas.labs.overthewire.org &"
+        else:
+            return f"open http://natas{level}.natas.labs.overthewire.org &"
 
     def parsing_arguments(self):
         # Parser Arguments
         parser = argparse.ArgumentParser(
             description=self.welcoming_message + self.options_message
         )
-        parser.add_argument("--number", "-n", type=int, help="Individual Level Number")
+        parser.add_argument("--number", "-n", type=int,
+                            help="Individual Level Number")
         parser.add_argument(
             "--cycle",
             "-c",
@@ -147,6 +150,8 @@ class WarGames:
             "--game",
             "-g",
             type=str,
+            # parser.add_argument("--proto").completer=ChoicesCompleter(('http', 'https', 'ssh', 'rsync', 'wss'))
+            # choices=list(self.wargames.keys()),
             help="Choose between [leviathan,krypton,natas,bandit,narnia,behemoth,utumno,maze,vortex,manpage]").completer = argcomplete.completers.ChoicesCompleter(
             (
                 "leviathan",
@@ -162,8 +167,6 @@ class WarGames:
             )
         )
 
-
-
         parser.add_argument(
             "--password",
             "-p",
@@ -174,9 +177,9 @@ class WarGames:
 
         argcomplete.autocomplete(parser)
         self.args = parser.parse_args()
-        
+
     def running_cycles(self):
-       
+
         while -1 < self.args.cycle < self.levels[self.args.game]:
             try:
                 self.clear()
