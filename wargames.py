@@ -1,4 +1,3 @@
-
 #!/bin/python
 # PYTHON_ARGCOMPLETE_OK
 
@@ -9,6 +8,7 @@ import time
 import platform
 import pyperclip
 import argcomplete
+from pathlib import Path
 
 
 # https://overthewire.org/wargames/wargame
@@ -31,12 +31,6 @@ class WarGames:
             "manpage": 2224,
         }
 
-        self.welcoming_message = "OverTheWire wargames easy connect.\n\n"
-
-        self.options_message = "\nWith -n you can specify a level to play \nor with -c you can specify a level to start and loop through all the rest.\nWith -g you must choose between [leviathan,krypton,bandit,narnia,behemoth,utumno,maze,vortex,manpage]\nYou can break out of the loop with keyboardInterruption at the continue to level prompt"
-
-        self.usage_message = "This is an easy way to connect to the overthewire wargames \nhttps://overthewire.org/\n"
-
         self.levels = {
             "leviathan": 8,
             "krypton": 8,
@@ -51,7 +45,15 @@ class WarGames:
         }
         self.passwords = {}
 
+        self.creating_messages()
+
+    def creating_messages(self):
         self.goodbye_message = "\n\n Goodbye and thanks for playing \n\n "
+        self.welcoming_message = "OverTheWire wargames easy connect.\n\n"
+
+        self.options_message = "\nWith -n you can specify a level to play \nor with -c you can specify a level to start and loop through all the rest.\nWith -g you must choose between [leviathan,krypton,bandit,narnia,behemoth,utumno,maze,vortex,manpage]\nYou can break out of the loop with keyboardInterruption at the continue to level prompt"
+
+        self.usage_message = "This is an easy way to connect to the overthewire wargames \nhttps://overthewire.org/\n"
 
     def clear(self):
         if (
@@ -72,7 +74,12 @@ class WarGames:
             self.clear()
 
     def password_loader(self):
-        file = f"{self.args.game}-passwords.txt"
+
+        parent = Path(__file__).parent
+
+        file_name = f"{self.args.game}-passwords.txt"
+        file = Path(parent, file_name)
+
         ls = os.listdir()
         if file not in ls:
             with open(file, "w") as f:
@@ -80,6 +87,8 @@ class WarGames:
         with open(file, "r") as f:
             ls = [i.strip("\n") for i in f]
         self.passwords = {ls[i]: ls[i + 1] for i in range(0, len(ls) - 1, 2)}
+
+        # Change into json files
 
     def password_saver(self):
         n = str(self.args.cycle if self.args.cycle is not None else self.args.number)
@@ -138,8 +147,7 @@ class WarGames:
         parser = argparse.ArgumentParser(
             description=self.welcoming_message + self.options_message
         )
-        parser.add_argument("--number", "-n", type=int,
-                            help="Individual Level Number")
+        parser.add_argument("--number", "-n", type=int, help="Individual Level Number")
         parser.add_argument(
             "--cycle",
             "-c",
@@ -153,7 +161,8 @@ class WarGames:
             type=str,
             # parser.add_argument("--proto").completer=ChoicesCompleter(('http', 'https', 'ssh', 'rsync', 'wss'))
             # choices=list(self.wargames.keys()),
-            help="Choose between [leviathan,krypton,natas,bandit,narnia,behemoth,utumno,maze,vortex,manpage]").completer = argcomplete.completers.ChoicesCompleter(
+            help="Choose between [leviathan,krypton,natas,bandit,narnia,behemoth,utumno,maze,vortex,manpage]",
+        ).completer = argcomplete.completers.ChoicesCompleter(
             (
                 "leviathan",
                 "krypton",
